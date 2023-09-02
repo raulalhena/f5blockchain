@@ -15,6 +15,21 @@ const main = () => {
     console.log(f5scoin.chain);
     console.log(`Is a valid blockchain? ${f5scoin.isChainValid()}`);
 
+    // INTENTAMOS HACKEAR LA BLOCKCHAIN (INMUTABILIDAD) //
+
+    // 1. Comprobamos si se ha modificado los datos y se mantiene la integridad de los hash del bloque modificado
+    // f5scoin.chain[1].data = { amount: 250 };
+    // 2. Recalculamos el hash para ver si podemos modificarlo y así hacer que nuestro cambio se valide
+    // f5scoin.chain[1].hash = f5scoin.chain[1].calculateHash();
+    // console.log(`Bloque con los datos modificados ${JSON.stringify(f5scoin.chain[1], null, 4)}\n`);
+    // console.log(`Is a valid blockchain? ${f5scoin.isChainValid()}`);
+
+    
+
+
+
+
+
 };
 
 main();

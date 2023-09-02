@@ -32,13 +32,13 @@ class Blockchain {
     // Si los hash no son correctos, devuelve false, si todos son correctos, devuelve true
     isChainValid() {
         // Recorremos el array de la blockchain, y obtenemos los
-        for(let i = 0; i < this.chain.length ; i++) {
+        for(let i = 1; i < this.chain.length ; i++) {
             const currentBlock = this.chain[i];
             const previousBlock = this.chain[ i - 1 ];
 
             // Comprobamos si los hash, tanto del bloque actual, como el previousHash que almacena el bloque actual con el hash 
             // del bloque anterior, son correctos
-            if(currentBlock.hash !== currentBlock.calculateHash() && currentBlock.previousHash !== previousBlock.hash) {
+            if(currentBlock.hash !== currentBlock.calculateHash() || currentBlock.previousHash !== previousBlock.hash) {
                 return false;
             } 
         }
