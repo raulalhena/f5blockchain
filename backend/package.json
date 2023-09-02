@@ -1,0 +1,22 @@
+{
+  "name": "blockchain-jon",
+  "description": "Vamos a realizar la blockchain usando el lenguaje JavaScript usando la capacidad de Orientación a Objetos y la sintaxis de clases del lenguaje.",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "dev": "npx nodemon ./backend/app.js",
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "crypto-js": "^4.1.1",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
