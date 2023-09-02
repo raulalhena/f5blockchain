@@ -4,6 +4,8 @@ class Blockchain {
     constructor() {
         // Inicializamos la blockchain con el bloque génsis
         this.chain = [this.createGenesisBlock()];
+        // Especificamos la dificultad al instanciar la Blockchain
+        this.difficulty = 4;
     }
 
     // Create del bloque genesis, primer bloque de la cadena
@@ -22,7 +24,10 @@ class Blockchain {
         newBlock.previousHash = this.getLatestBlock().hash;
 
         // Calcular el Hash del bloque que queremos añadir
-        newBlock.hash = newBlock.calculateHash();
+        // newBlock.hash = newBlock.calculateHash();
+
+        // Minado del bloque
+        newBlock.mintBlock(this.difficulty);
 
         // Añadimos el bloque a la blockchain (Array)
         this.chain.push(newBlock);

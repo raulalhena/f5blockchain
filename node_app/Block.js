@@ -12,11 +12,22 @@ class Block {
         this.previousHash = previousHash;
         // Hash actual del bloque
         this.hash = this.calculateHash();
+        // Añadimos el nonce
+        this.nonce = 0;
     }
 
     // Cálculo del hash del bloque
     calculateHash() {
-        return SHA256(this.index + this.timestamp + this.previousHash + JSON.stringify(this.data)).toString();
+        return SHA256(this.index + this.timestamp + this.previousHash + JSON.stringify(this.data) + this.nonce).toString();
+    }
+
+    // PoW, difficulty = número de 0 que añadiremos al hash creado
+    mintBlock(difficulty) {
+        while(this.hash.substring(0,difficulty) !== Array(difficulty + 1).join("0")){
+            this.nonce++;
+            this.hash = this.calculateHash();
+        }
+        console.log(`Block mint ${this.hash}`);
     }
 }
 
