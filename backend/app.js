@@ -12,7 +12,6 @@ app.get('/', (req, res) => {
 
 app.use('/api', getRoutes());
 
-
 app.listen('4000', () => {
     console.log('Server listening on port 4000...');
 });

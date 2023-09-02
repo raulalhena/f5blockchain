@@ -4,6 +4,14 @@ const getAllBlocks = (req, res) => {
     res.status(200).json(serviceBlockchain.getAllBlocks());
 }
 
+const getAllTransactions = (req, res) => {
+    res.status(200).json(serviceBlockchain.getAllTransactions());
+}
+
+const addTransaction = (req, res) => {
+    res.status(200).json(serviceBlockchain.addTransaction(req.body));
+}
+
 const addBlock = (req, res) => {
     res.status(200).json(serviceBlockchain.addBlock(req.body.data));
 }
@@ -22,5 +30,7 @@ export {
     getAllBlocks,
     addBlock,
     getLatestBlock,
-    isChainValid
+    isChainValid,
+    addTransaction,
+    getAllTransactions
 }
