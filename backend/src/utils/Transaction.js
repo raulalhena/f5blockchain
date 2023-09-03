@@ -9,10 +9,12 @@ class Transaction {
         this.fromAddress = fromAddress;
         this.toAddress = toAddress;
         this.amount = amount;
+        this.hash = '';
     }
 
     calculateHash(){
-        return SHA256(this.fromAddress + this.toAddress + this.amount).toString();
+        this.hash = SHA256(this.fromAddress + this.toAddress + this.amount).toString();
+        return this.hash;
     }
 
     signTransaction(signingKey) {

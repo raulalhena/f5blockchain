@@ -6,7 +6,7 @@ class Blockchain {
         // Inicializamos la blockchain con el bloque génsis
         this.chain = [this.createGenesisBlock()];
         // Especificamos la dificultad al instanciar la Blockchain
-        this.difficulty = 2;
+        this.difficulty = 4;
         // Crear un array de transacciones pendientes
         this.pendingTransactions = [];
         // Recompensa que recibirá el minero por crear el nuevo bloque
@@ -26,7 +26,7 @@ class Blockchain {
     // Minado de las transacciones pendientes
     minePendingTransactions(miningRewardAddress) {
         // Creamos la transacción del minado para enviar la recompensa al minero que crea el bloque
-        const rewardTx = new Transaction(null, miningRewardAddress, this.miningReward);
+        const rewardTx = new Transaction('F5SCOIN11111111111111', miningRewardAddress, this.miningReward);
         this.pendingTransactions.push(rewardTx);
 
         // Creamos nuevo objeto bloque, pasandole los argumentos correspondientes al constructor
@@ -34,14 +34,14 @@ class Blockchain {
 
         // Minamos el bloque pasandole la dificultad e informamos que el bloque se ha minado correctamente
         block.mineBlock(this.difficulty);
-        console.log(`Block successfully mined, hash: ${block.hash}`);
         
         // Añadimos el bloque a la blockchain
         this.chain.push(block);
 
         // Vaciamos el array de transacciones
         this.pendingTransactions = [];
-        console.log(block.transactions);
+        // console.log(block.transactions);
+
         return block.transactions;
     }
 

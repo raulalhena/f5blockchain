@@ -15,8 +15,8 @@ export default function DenseAppBar() {
         <Toolbar variant="dense" sx={{ flexGrow: 1, display: 'flex', justifyContent: 'space-between' }}>
           <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
           </IconButton>
-          <Box sx={{ width: '100%'}}>
-            <img src='./src/assets/react.svg' />
+          <Box sx={{ width: '100%', fontWeight: '900' }}>
+            F5SCOIN Explorer
           </Box >
             <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'right' }}>   
                 {navItems.map((item) => (
