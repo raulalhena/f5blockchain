@@ -6,7 +6,7 @@ class Blockchain {
         // Inicializamos la blockchain con el bloque génsis
         this.chain = [this.createGenesisBlock()];
         // Especificamos la dificultad al instanciar la Blockchain
-        this.difficulty = 4;
+        this.difficulty = 2;
         // Crear un array de transacciones pendientes
         this.pendingTransactions = [];
         // Recompensa que recibirá el minero por crear el nuevo bloque

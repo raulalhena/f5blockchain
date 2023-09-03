@@ -10,7 +10,7 @@ function TransactionNavigator(props) {
             <h2>Transacción: {transaction.hash}</h2>
             <NavigateBack />
         </Box>
-     <Box>
+     <Box sx={{ wordWrap: 'break-word', fontSize: '13px'}}>
         <Typography><strong>From Address: </strong>{transaction.fromAddress}</Typography>
         <Typography><strong>To Address: </strong>{transaction.toAddress}</Typography>
         <Typography><strong>Signature: </strong>{transaction.signature}</Typography>

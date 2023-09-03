@@ -13,7 +13,7 @@ function BlockNavigator(props) {
     const block = props.block;
   return (
      <main style={{ height: '100vh' }}>
-        <Container sx={{ marginTop: '40px', padding: '20px', maxWidth: '100vw', maxHeight: '100vh', border: '1px solid orange' }} element='main'>
+        <Container sx={{ marginTop: '40px', padding: '20px', maxWidth: '100vw', maxHeight: '100vh' }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <h2>Bloque:</h2>
                 <NavigateBack />
