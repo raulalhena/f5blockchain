@@ -14,6 +14,7 @@ function App() {
     <CssBaseline>
     <BrowserRouter>
       <Routes>
+        <Route path='/' element={ <Home />} />
         <Route path='/home' element={ <Home />} />
         <Route path='/explorer' element={ <Explorer />} />
         <Route path='/smartcontracts' element={ <SmartContracts />} />
