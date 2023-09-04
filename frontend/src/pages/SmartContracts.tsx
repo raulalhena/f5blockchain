@@ -1,7 +1,7 @@
 import React from 'react'
 import DenseAppBar from '../components/Navbar'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Box, Paper } from '@mui/material'
-import { CopyBlock, CodeBlock, dracula } from "react-code-blocks";
+import { CopyBlock, dracula } from "react-code-blocks";
 import f5scoinABI from '../../abis/f5scoin.json'
 
 const f5scoinContractSolidity = `pragma solidity ^0.8.7;
