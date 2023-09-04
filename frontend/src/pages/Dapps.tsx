@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import DenseAppBar from '../components/Navbar'
 import { Box, Typography } from '@mui/material'
 import {TableContainer} from '@mui/material';
@@ -8,10 +8,14 @@ import {TableHead} from '@mui/material';
 import {TableCell} from '@mui/material';
 import {TableRow} from '@mui/material';
 import {Paper} from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { ethers } from 'ethers'
+import ContractInfo from '../interfaces/ContractInfo';
+import BalanceInfo from '../interfaces/BalanceInfo';
 import f5scoinABI from '../../abis/f5scoin.json'
 
-console.log('abi', f5scoinABI)
+console.log('ABI', f5scoinABI)
 
 const getContractButton = {
   width: '200px', 
@@ -30,21 +34,15 @@ const contractInput = {
   borderRadius: '5px'
 }
 
-interface ContractInfo {
-  address: string;
-  tokenName: string;
-  tokenSymbol: string;
-  totalSupply: string;
-}
-
-interface BalanceInfo {
-  address: string;
-  balance: string;
-}
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref,
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function Dapps() {
-  const [contractListened, setContractListened] = useState();
-  const [wallet, setWallet] = useState();
+
   const [contractInfo, setContractInfo] = useState<ContractInfo>({
     address: "-",
     tokenName: "-",
@@ -56,31 +54,38 @@ function Dapps() {
     balance: "-"
   });
 
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState({
+    severity: '',
+    text: ''
+  });
+
+  const showMessage = (message) => {
+    setMessage(message)
+    setOpen(true);
+  };
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   // Conectamos a Metamask con el objeto que inyecta la propia Metamask
-  const requestAccount = async () => {
+  const checkMetamask = async () => {
     if(window.ethereum) {
-      console.log('detected');
-      try{
-        const accounts = await window.ethereum.request({
-          method: 'eth_requestAccounts'
-        });
-        setWallet(accounts)
-      } catch(error) {
-        console.log(error);
-      }
+      showMessage({ severity: 'success', text: 'Metamask detectado! :)' });
     } else {
-      console.log('Metamask not detected')
+      showMessage({ severity: 'error', text: 'Metmask no detectado. Instalalo! :)' });
     }
   }
 
   // Connectamos usando la libreria ethersjs
   const connectWallet = async () => {
     if(typeof window.ethereum !== 'undefined') {
-      await requestAccount();
-
       const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      console.log('address', await signer.getAddress());
       return provider;
     }
   }
@@ -124,10 +129,12 @@ function Dapps() {
     const f5scoin = new ethers.Contract(contractInfo.address, f5scoinABI, provider);
     const signer = await provider.getSigner();
     const contractSigner = await f5scoin.connect(signer);
-    console.log('TO', data.get('toAddress'))
-
     await contractSigner.transfer(data.get('toAddress'), ethers.parseUnits(data.get('amount'), 'ether'));
   }
+
+  useEffect(() => {
+    checkMetamask();
+  },[]);
 
   return (
     <>
@@ -193,6 +200,11 @@ function Dapps() {
             <button style={getContractButton} type='submit'>Transferir</button>
           </form>
         </Box>
+        <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity={message.severity} sx={{ width: '100%' }}>
+            {message.text}
+          </Alert>
+        </Snackbar>
       </main>
     </>
   )
