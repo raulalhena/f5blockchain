@@ -25,9 +25,8 @@ io.on("connection", (socket) => {
     console.log(miners);
   });
   
-  socket.on('minerJoined', (data) => {
-    console.log(miners);
-    io.emit('minerJoined', data);
+  socket.on('joinToMine', (data) => {
+    io.emit('joinedToMine', data);
     for(const miner of miners) {
       if(miner.id === data.id) return;
     }
@@ -37,9 +36,15 @@ io.on("connection", (socket) => {
 
   socket.on('disconnected', () => {
     console.log(socket.id)
+    let minerDisconnected;
     miners.map((miner, index, miners) => {
-      if(miner.id === socket.id) miners.splice(index, 1);
+      if(miner.id === socket.id) {
+        minerDisconnected = miner;
+        miners.splice(index, 1);
+      }
     });
+    io.emit('minerOut', minerDisconnected);
+    console.log('miners still connected', miners);
   });
  
 });

@@ -1,89 +1,97 @@
 import React, { useState, useEffect } from 'react';
-import { socket } from './socket';
 import { ConnectionState } from './components/ConnectionState';
 import { ConnectionManager } from './components/ConnectionManager';
 import { Events } from './components/Events';
 import { MyForm } from './components/MyForm';
 import Miners from './components/Miners';
 import Miner from './interfaces/Miner';
+import { connect } from 'socket.io-client';
+import { io } from 'socket.io-client';
 
 export default function App() {
-  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [socket, setSocket] = useState();
+  const [username, setUsername] = useState();
+  const [isConnected, setIsConnected] = useState(false);
   const [miners, setMiners] = useState([]);
-  const [value, setValue] = useState('');
-  const [isWelcomed, setIsWelcomed] = useState(true);
-  const [isJoined, setIsJoined] = useState(false);
 
-  function join() {
-    socket.emit('minerJoined', {
-      name: value,
-      id: socket.id,
-      balance: 0
-    });
+  const connect = () => {
+    setSocket(io('http://localhost:3000'));
   }
 
-  function connect() {
-    socket.connect();
-    setIsConnected(true);
+  const disconnect = () => {
+    if(socket) {
+      socket.disconnect();
+      setSocket();
+    }
   }
 
-  function disconnect() {
-    socket.emit('disconnected');
+  const joinToMine = () => {
+    if(socket) socket.emit('joinToMine', {name: username, id: socket.id});
   }
 
   useEffect(() => {
-
-  },[disconnect]);
+    console.log('render')
+  })
 
   useEffect(() => {
-    function onConnect () {
-      setIsConnected(true);
-    }
+    if(socket) socket.connect();
+  }, [socket, setSocket]);
 
-    function onDisconnect() {
-      setIsConnected(false);
-      setIsJoined(false);
-    }
+  useEffect(() => {
+    if(socket) {
+      const onConnect = () => {
+        setIsConnected(true);
+        console.log('on connect')
+      }
+  
+      const onWelcome = (miners) => {
+        console.log('welcome')
+      }
 
-    function onWelcome(miners) {
-      setMiners(miners);
-      setIsConnected(true);
-    }
+      const onJoinedToMine = (newMiner) => {
+        console.log('joined to mine')
+        setMiners(m => [...m, {
+            name: newMiner.name,
+            id: newMiner.id
+          }
+        ]);
+      }
 
-    function onDisconnected() {
-      setMiners([]);
-      setIsConnected(false);
-      setIsJoined(false);
+      const onDisconnect = () => {
+        setIsConnected(false);
+      }
+  
+      socket.on('connect', onConnect);
+      socket.on('welcome', onWelcome);
+      socket.on('disconnect', onDisconnect);
+      socket.on('joinedToMine', onJoinedToMine);
+  
+      return () => {
+        socket.off('connect', onConnect);
+        socket.off('welcome', onWelcome);
+      }
     }
+  }, [socket, setSocket])
 
-    const onMinerJoined = (newMiner) => {
-      setIsJoined(true);
-      console.log('miners', miners)
-      console.log('new miner', newMiner)
-      setMiners(miners => [...miners, newMiner]);
-    }
-    
-    socket.on('connect', onConnect);
-    socket.on('disconnect', onDisconnect);
-    socket.once('welcome', onWelcome);
-    socket.on('minerJoined',onMinerJoined);
 
-    return () => {
-      socket.off('connect', onConnect);
-      socket.off('disconnect', onDisconnect);
-      socket.off('minerJoined', onMinerJoined);
-      socket.off('welcome', onWelcome);
-      socket.off('disconnected', onDisconnected);
-    };
-  }, []);
 
   return (
     <div className="App">
       <main style={{ heigh: '100vh', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
-        <ConnectionState isConnected={ isConnected } />
+        <button onClick={connect}>Connect</button>
+        <button onClick={disconnect}>Disconnect</button>
+        <div>Estado: { isConnected ? 'Conectado' : 'Desconectado' }</div>
+        <input style={{ width: '200px', height: '25px'}} onChange={ e => setUsername(e.target.value) } placeholder='Nombre de usuario...' />
+        <button onClick={joinToMine}>Unirme al minado</button>
+        <div>
+          {
+            miners.map(miner => `${miner.id} ${miner.name}`)
+          }
+        </div>
+        {/* <ConnectionState isConnected={ isConnected } />
         
         <div hidden={isWelcomed} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '10px'}}>
-          <input style={{ width: '200px', height: '25px'}} onChange={ e => setValue(e.target.value) } placeholder='Nombre de usuario...' />
+          <input style={{ width: '200px', height: '25px'}} onChange={ e => setUsername(e.target.value) } placeholder='Nombre de usuario...' />
           {
             !isConnected ?
               <button onClick={connect} style={{ width: '200px', height: '25px'}}>Conectar</button>
@@ -106,7 +114,7 @@ export default function App() {
             miners.map((miner, index) => <li key={index}>{miner.id + ' ' + miner.name}</li>) 
         }
         </ul>
-        </div>
+        </div> */}
       </main>
     </div>
   );
