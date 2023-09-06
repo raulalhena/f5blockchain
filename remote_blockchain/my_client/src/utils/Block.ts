@@ -13,7 +13,7 @@ class Block {
         // Añadimos el nonce
         this.nonce = 0;
         //Añadimos difficulty con propositos educativos
-        this.difficulty = parseInt(difficulty);
+        this.difficulty = difficulty;
     }
 
     // Cálculo del hash del bloque

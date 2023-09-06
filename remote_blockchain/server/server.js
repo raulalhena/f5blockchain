@@ -61,11 +61,14 @@ io.on("connection", (socket) => {
   socket.on('hashFound', (hash) => {
     if(!hashPool.includes(hash)){
       hashPool.push(hash);
+      let winner;
       miners.map((miner) => {
-        if(miner.id === socket.id) miner.rewards++;
+        if(miner.id === socket.id){
+          miner.rewards++;
+          winner = miner.name;
+        }
       });
-      console.log('hash pool', hashPool);
-      io.emit('hashFound', miners);
+      io.emit('hashFound', winner);
     }
   })
   
