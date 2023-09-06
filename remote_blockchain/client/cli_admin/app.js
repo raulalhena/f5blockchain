@@ -20,6 +20,14 @@ const app = () => {
     const dIndex = process.argv.indexOf('-d');
     if(dIndex) args.difficulty = process.argv[dIndex + 1];
 
+    const tIndex = process.argv.indexOf('-t');
+    if(tIndex) args.transactions = process.argv[tIndex + 1];
+
+    const pIndex = process.argv.indexOf('-p');
+    if(pIndex) args.difficulty = process.argv[pIndex + 1];
+
+
+    console.log(args)
     initAdmin(args);
 }
 
