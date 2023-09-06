@@ -11,6 +11,7 @@ const io = new Server(httpServer, {
 });
 
  const miners = [];
+ const hashPool = [];
 
 io.on("connection", (socket) => {
   
@@ -34,7 +35,7 @@ io.on("connection", (socket) => {
     console.log(miners);
   });
 
-  socket.on('disconnected', () => {
+  socket.on('minerOut', () => {
     console.log(socket.id)
     let minerDisconnected;
     miners.map((miner, index, miners) => {
@@ -43,10 +44,31 @@ io.on("connection", (socket) => {
         miners.splice(index, 1);
       }
     });
-    io.emit('minerOut', minerDisconnected);
+    io.emit('minerOut', {updatedMiners: miners, id: socket.id});
     console.log('miners still connected', miners);
   });
- 
+
+  socket.on('getMiners', () => {
+    console.log('getminers')
+    io.emit('getMiners', miners);
+  });
+
+  socket.on('sendHash', (data) => {
+    console.log('sendhash')
+    socket.broadcast.emit('startMining', (data));
+  });
+
+  socket.on('hashFound', (hash) => {
+    if(!hashPool.includes(hash)){
+      hashPool.push(hash);
+      miners.map((miner) => {
+        if(miner.id === socket.id) miner.rewards++;
+      });
+      console.log('hash pool', hashPool);
+      io.emit('hashFound', miners);
+    }
+  })
+  
 });
 
 httpServer.listen(3000, () => {
