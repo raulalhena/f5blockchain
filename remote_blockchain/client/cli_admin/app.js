@@ -24,10 +24,8 @@ const app = () => {
     if(tIndex) args.transactions = process.argv[tIndex + 1];
 
     const pIndex = process.argv.indexOf('-p');
-    if(pIndex) args.difficulty = process.argv[pIndex + 1];
+    if(pIndex) args.previousHash = process.argv[pIndex + 1];
 
-
-    console.log(args)
     initAdmin(args);
 }
 
