@@ -23,12 +23,14 @@ const main = () => {
     f5scoin.addTransactions(tx1);
 
     // Iniciamos el minado 1er bloque
-    console.time('Time elpased Mining 1');
-    console.log('Starting mining first block...');
+    console.time('Tiempo transcurrido minando 1');
+    console.log(`\n\n****************************************************`);
+    console.log(' >>>> Iniciamos minado del primer bloque... <<<<');
+    console.log(`****************************************************`);
 
     // Comprobamos todas las transacciones pendientes y las gestionamos
     f5scoin.minePendingTransactions(myWalletAddress);
-    console.timeEnd('Time elpased Mining 1');
+    console.timeEnd('Tiempo transcurrido minando 1');
 
     // Obtenemos el balance de la wallet
     console.log(`El balance de la mi wallet es: ${f5scoin.getBalanceOfAddress(myWalletAddress)}`);
@@ -43,18 +45,26 @@ const main = () => {
     f5scoin.addTransactions(tx2);
 
     // Iniciamos el minado 1er bloque
-    console.time('Time elpased Mining 2');
-    console.log('Starting mining first block...');
+    console.time('Tiempo transcurrido minando 2');
+    console.log(`\n\n****************************************************`);
+    console.log(' >>>> Iniciamos minado del segundo bloque... <<<<');
+    console.log(`****************************************************`);
 
     // Comprobamos todas las transacciones pendientes y las gestionamos
     f5scoin.minePendingTransactions(myWalletAddress);
-    console.timeEnd('Time elpased Mining 2');
+    console.timeEnd('Tiempo transcurrido minando 2');
 
     // Obtenemos el balance de la wallet
     console.log(`El balance de la mi wallet es: ${f5scoin.getBalanceOfAddress(myWalletAddress)}`);
 
+    console.log(`\n\n********************************************`);
+    console.log(` >>>> Bloques minados en la Blockchain <<<< `);
+    console.log(`********************************************`);
     for(let i = 0; i < f5scoin.chain.length; i++) {
-        console.log(`Bloque ${JSON.stringify(f5scoin.chain[i], null, 4)}`);
+        console.log(`\n\n************************`);
+        console.log(` >>>> Bloque ${i} <<<< `);
+        console.log(`************************\n`);
+        console.log(`${JSON.stringify(f5scoin.chain[i], null, 4)}`);
     }
     // console.log(`Los bloques que componen la blockchain: \n `, f5scoin.chain);
 
@@ -65,7 +75,7 @@ const main = () => {
     // Modificamos una transacción una vez ya añadida a la blockchain
     // f5scoin.chain[1].transactions[0].amount = 1000000;
 
-    console.log(`Es una blockchain valida? ${f5scoin.isChainValid()}`);
+    console.log(`\n\n >>>> Comprobamos si la Blockchain es válida ${f5scoin.isChainValid()}`);
 
 
 
