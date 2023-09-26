@@ -1,4 +1,4 @@
-import Block from '../backend/src/utils/Block.js';
+import Block from './Block.js';
 import Transaction from './Transaction.js';
 
 class Blockchain {
